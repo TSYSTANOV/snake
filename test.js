@@ -1,6 +1,6 @@
-let width = 200;
-let height = 200;
-let size = 10;
+let width = 400;
+let height = 400;
+let size = 20;
 let iterator = 3;
 
 let speed = 300;
@@ -18,7 +18,7 @@ div.style.cssText = `
 }`;
 document.querySelector("body").append(div);
 
-for (let i = 1; i <= width + height; i++) {
+for (let i = 1; i <= width; i++) {
   let div2 = document.createElement("div");
   div2.style.cssText = `
   width:${(width + height) / ((width + height) / size)}px;
@@ -29,10 +29,11 @@ for (let i = 1; i <= width + height; i++) {
 
 function randomNumb() {
   let numb;
-  numb = parseFloat(`${Math.round(Math.random() * 20)}0`);
+  numb = parseFloat(`${Math.round(Math.random() * 40 )}0`) 
   if (numb === width || numb === 0) {
-    numb = parseFloat(`${Math.round(Math.random() * 20)}0`);
+    numb = parseFloat(`${Math.round(Math.random() * 40)}0`)
   }
+  console.log(numb)
   return numb;
 }
 
@@ -112,6 +113,7 @@ function CreateEl(top, left) {
     this.top = this.top < width ? this.top + size : width;
     this.left = this.left;
   };
+ 
   this.checkCollizion = function (id) {
     if (this.top < 0 || this.top >= width) {
       alert("GAME OVER");
@@ -158,9 +160,23 @@ alfa = setInterval(() => {
 }, speed);
 let prevKey;
 document.addEventListener("keydown", () => {
-  console.log(event);
+
+  if(event.key === prevKey)
+  {
+    return
+  }
+  console.log(event.key)
+  if(event.key === 'x')
+  {
+    clearInterval(alfa);
+  }
   if (event.key === "ArrowRight" && prevKey !== "ArrowLeft") {
     clearInterval(alfa);
+    a.rightMet();
+    let beta = a.vis();
+    a.checkSnakeArrow(beta);
+    a.checkAppleEat();
+    a.checkCollizion(alfa);
     prevKey = "ArrowRight";
     alfa = setInterval(() => {
       a.rightMet();
@@ -172,6 +188,11 @@ document.addEventListener("keydown", () => {
   }
   if (event.key === "ArrowLeft" && prevKey !== "ArrowRight") {
     clearInterval(alfa);
+    a.leftMet();
+      let beta = a.vis();
+      a.checkSnakeArrow(beta);
+      a.checkAppleEat();
+      a.checkCollizion(alfa);
     prevKey = "ArrowLeft";
     alfa = setInterval(() => {
       a.leftMet();
@@ -183,6 +204,11 @@ document.addEventListener("keydown", () => {
   }
   if (event.key === "ArrowDown" && prevKey !== "ArrowUp") {
     clearInterval(alfa);
+    a.downMet();
+    let beta = a.vis();
+    a.checkSnakeArrow(beta);
+    a.checkAppleEat();
+    a.checkCollizion(alfa);
     prevKey = "ArrowDown";
     alfa = setInterval(() => {
       a.downMet();
@@ -194,6 +220,11 @@ document.addEventListener("keydown", () => {
   }
   if (event.key === "ArrowUp" && prevKey !== "ArrowDown") {
     clearInterval(alfa);
+    a.topMet();
+      let beta = a.vis();
+      a.checkSnakeArrow(beta);
+      a.checkAppleEat();
+      a.checkCollizion(alfa);
     prevKey = "ArrowUp";
     alfa = setInterval(() => {
       a.topMet();
