@@ -1,9 +1,10 @@
+
 let width = 400;
 let height = 400;
 let size = 20;
-let iterator = 3;
+let iterator = 100;
+let speed = 500;
 
-let speed = 300;
 let div = document.createElement("div");
 div.className = "text";
 div.style.cssText = `
@@ -27,16 +28,6 @@ for (let i = 1; i <= width; i++) {
   div.append(div2);
 }
 
-function randomNumb() {
-  let numb;
-  numb = parseFloat(`${Math.round(Math.random() * 40 )}0`) 
-  if (numb === width || numb === 0) {
-    numb = parseFloat(`${Math.round(Math.random() * 40)}0`)
-  }
-  console.log(numb)
-  return numb;
-}
-
 function CreateEl(top, left) {
   this.width = `${size}px`;
   this.height = `${size}px`;
@@ -44,20 +35,54 @@ function CreateEl(top, left) {
   this.backgroundColor = "red";
   this.top = top;
   this.left = left;
+  this.randomNumb = function() {
+    let numb;
+    let numbers = [2,4,6,8]
+    
+    let a = Math.round(Math.random() * 4) 
+    let b = numbers[Math.round(Math.random() * numbers.length)]
+    let c = Math.round(Math.random() * 3)
+    let str = ''
+    if(c === 0)
+    {
+    str = `${a}${b}0`
+    }
+    else if(c === 1)
+    {
+      str = `${a}00`   
+    }
+    else
+    {
+      str = `${a}0`
+    }
+    // let ident = this.checkSnakeArrow(1, parseFloat(str))
+    // console.log(ident === undefined)
+  
+    if(parseFloat(str) % size === 0 && parseFloat(str) < width && parseFloat(str) > 0)
+    {
+      numb = parseFloat(str)
+    }
+    else
+    {
+      numb = this.randomNumb()
+    }  
+    return numb
+  }
   this.appleVis = function () {
     if (document.querySelector("apple")) {
       document.querySelector("apple").remove();
     }
     let el = document.createElement("div");
     el.classList.add("apple");
-    el.style.top = `${randomNumb()}px`;
-    el.style.left = `${randomNumb()}px`;
+    el.style.top = `${this.randomNumb()}px`; 
+    el.style.left = `${this.randomNumb()}px`;
     el.style.width = this.width;
     el.style.height = this.height;
     el.style.position = this.position;
     document.querySelector(".text").append(el);
   };
-  this.vis = function (param) {
+
+  this.vis = function () {
     let indexTop = 0;
     let indexLeft = 0;
     let el = document.createElement("div");
@@ -72,7 +97,7 @@ function CreateEl(top, left) {
     indexLeft += size;
     return { top: parseFloat(el.style.top), left: parseFloat(el.style.left) };
   };
-
+  
   this.visible = function () {
     let indexTop = 0;
     let indexLeft = 0;
@@ -142,7 +167,6 @@ function CreateEl(top, left) {
     for (let i = 0; i < arr.length - 1; i++) {
       let t = parseFloat(arr[i].style.top);
       let l = parseFloat(arr[i].style.left);
-
       if (t === id.top && l === id.left) {
         alert("GAME OVER");
       }
@@ -165,7 +189,7 @@ document.addEventListener("keydown", () => {
   {
     return
   }
-  console.log(event.key)
+  
   if(event.key === 'x')
   {
     clearInterval(alfa);
@@ -234,4 +258,4 @@ document.addEventListener("keydown", () => {
       a.checkCollizion(alfa);
     }, speed);
   }
-});
+})
